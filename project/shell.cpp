@@ -123,7 +123,7 @@ Expression parseCommandLine(string commandLine) {
 			expression.outputToFile = args[args.size()-1];
 			args.resize(args.size()-2);
 		}
-		if (i == 0 & args.size() > 3 && args[args.size()-2] == "<") {
+		if (i == 0 && args.size() > 3 && args[args.size()-2] == "<") {
 			expression.inputFromFile = args[args.size()-1];
 			args.resize(args.size()-2);
 		}
