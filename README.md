@@ -10,8 +10,9 @@ Note: if you have additions or changes, please send them to us.
 Already using Linux? Great! A couple of small steps are left:
 
 - Install Visual Studio Code. See https://code.visualstudio.com/docs/setup/linux
-- Make sure you have a C++ dev environment. For Ubuntu:  
-  `sudo apt-get install build-essential g++ gdb cmake make git`
+- Make sure you have a C++ dev environment. For Ubuntu: 
+  `sudo apt-get update`   
+  `sudo apt-get install -y build-essential g++ gdb cmake make git`
 - Download the project files with the follow command:  
   `git clone https://gitlab.science.ru.nl/operatingsystems/assignment1.git`
 - Open the folder `assignment1/project` in Visual Studio Code.
