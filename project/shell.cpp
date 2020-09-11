@@ -181,7 +181,7 @@ int step1(bool showPrompt) {
 		// free non used resources (why?)
 		Command cmd = {{string("tail"), string("-c"), string("5")}};
 		executeCommand(cmd);
-		abort(); // als de executable niet gevonden wordt moet het child proces stoppen
+		abort(); // if the executable is not found, the child process should stop (to avoid having two shells active)
 	}
 
 	// free non used resources (why?)
