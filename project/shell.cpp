@@ -115,15 +115,15 @@ Expression parseCommandLine(string commandLine) {
 	for (size_t i = 0; i < commands.size(); ++i) {
 		string& line = commands[i];
 		vector<string> args = splitString(line, ' ');
-		if (i == commands.size() - 1 && args.size() > 2 && args[args.size()-1] == "&") {
+		if (i == commands.size() - 1 && args.size() > 1 && args[args.size()-1] == "&") {
 			expression.background = true;
 			args.resize(args.size()-1);
 		}
-		if (i == commands.size() - 1 && args.size() > 3 && args[args.size()-2] == ">") {
+		if (i == commands.size() - 1 && args.size() > 2 && args[args.size()-2] == ">") {
 			expression.outputToFile = args[args.size()-1];
 			args.resize(args.size()-2);
 		}
-		if (i == 0 && args.size() > 3 && args[args.size()-2] == "<") {
+		if (i == 0 && args.size() > 2 && args[args.size()-2] == "<") {
 			expression.inputFromFile = args[args.size()-1];
 			args.resize(args.size()-2);
 		}
