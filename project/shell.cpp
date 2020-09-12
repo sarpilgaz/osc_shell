@@ -22,7 +22,7 @@
 
 #include <vector>
 
-// although it is good habit, you don't have to type '' before many objects by including this line
+// although it is good habit, you don't have to type 'std' before many objects by including this line
 using namespace std;
 
 struct Command {
