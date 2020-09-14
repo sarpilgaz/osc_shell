@@ -159,7 +159,7 @@ int normal(bool showPrompt) {
 	return 0;
 }
 
-// framework for executing "date | tail -c 10" using raw commands
+// framework for executing "date | tail -c 5" using raw commands
 // two processes are created, and connected to each other
 int step1(bool showPrompt) {
 	// create communication channel shared between the two processes
@@ -181,7 +181,7 @@ int step1(bool showPrompt) {
 		// free non used resources (why?)
 		Command cmd = {{string("tail"), string("-c"), string("5")}};
 		executeCommand(cmd);
-		abort(); // if the executable is not found, the child process should stop (to avoid having two shells active)
+		abort(); // if the executable is not found, we should abort. (why?)
 	}
 
 	// free non used resources (why?)
