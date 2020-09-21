@@ -9,7 +9,9 @@ Note: if you have additions or changes, please send them to us.
 
 Already using Linux? Great! A couple of small steps are left:
 
-- Install Visual Studio Code. See https://code.visualstudio.com/docs/setup/linux
+- Install Visual Studio Code. See https://code.visualstudio.com/docs/setup/linux. Make sure you also install the following extensions:
+  - C/C++ extension from Microsoft
+  - CMake Tools extension
 - Make sure you have a C++ dev environment. For Ubuntu: 
   `sudo apt-get update`   
   `sudo apt-get install -y build-essential g++ gdb cmake make git`
@@ -28,6 +30,9 @@ So, macOS is built on the UNIX foundation. So it is also quite easy.
 - Next, install the dependencies with these commands:  
   `brew install cmake git`  
   `brew cask install visual-studio-code`
+- Install the following Visual Studio Code extensions:
+  - C/C++ extension from Microsoft
+  - CMake Tools extension
 - Download the project files with the follow command:  
   `git clone https://gitlab.science.ru.nl/operatingsystems/assignment1.git`
 - Open the folder `assignment1/project` in Visual Studio Code.
@@ -47,10 +52,9 @@ So, Windows is not from the UNIX heritage, so the setup is more involved. In any
         8. install the _Remote - WSL_ extension in Visual Studio Code.
         9. follow the instructions above under Linux (after connecting to WSL with the green button bottom right)
 - Use Docker on Windows 10. Containers are an efficient way (compared to virtual machines) to gather all dependencies and distribute binaries. Docker allows one to edit files in Windows with Visual Studio Code, and use a lightweight Linux container to compile and run your programs. See https://docs.docker.com/docker-for-windows/install/ for installation.  Install the _Remote - Docker_ extension in Visual Studio Code.
-- Use SSH to execute commands remotely. There is a Linux login server provided by the university: lilo.science.ru.nl. More details are provided below.
+- Use SSH to execute commands remotely. There is a Linux login server provided by the university: lilo.science.ru.nl. More details are provided below (under SSH setup instructions).
 
-
-# SSH Setup Instructions
+## SSH Setup Instructions (only needed if other options fail)
 Visual Studio Code is a source-code editor made by Microsoft for Windows, Linux and macOS.[7] Features include support for debugging, syntax highlighting, intelligent code completion, snippets, code refactoring, and Git. Users can change the theme, keyboard shortcuts, preferences, and install extensions that add additional functionality.
 
 One of these extensions is called **Remote - SSH**. The **Remote - SSH** extension lets you use any remote machine with a SSH server as your development environment. This can greatly simplify development in a wide variety of situations. No development environment is needed on your local machine to gain these benefits since the Remote extension runs commands and other extensions directly on the remote machine. You can open any folder on the remote machine and work with it just as you would if the folder were on your own machine.
@@ -59,7 +63,7 @@ Before you read further, make sure that you installed an [OpenSSH client (Putty 
 
 Note: if you have set up WSL or Docker, you can use the _Remote - WSL_ or the _Remote - Docker_ extensions. They work quite similar as the SSH extension.
 
-## Setup Visual Studio Code
+##### Setup Visual Studio Code
 Download and install Visual Studio Code from this [website](https://code.visualstudio.com/).
 Open Visual Code:
 1. Click on the extension button on the left side
@@ -68,7 +72,7 @@ Open Visual Code:
 4. Install *Remote - SSH*
 ![](images/pic_1.jpg)
 
-## Connect to the remote server
+##### Connect to the remote server
 Now, we wanna connect to the remote server:
 1. Click on new remote button on the left side
 2. Click on the plus-button
@@ -76,7 +80,9 @@ Now, we wanna connect to the remote server:
 4. Right-Click on the new appeard ssh target and connect to the server
 ![](images/pic_2.png)
 
-Now, you can use visual studio code as it would be on your local machine. You can browse through the folders, open terminals etc..
+Now, you can use Visual Studio Code as it would be on your local machine. You can browse through the folders, open terminals etc.
+
+## Common Visual Studio Code setup
 
 Install now the following extensions on the remote machines visual studio code:
 - C/C++ extension from Microsoft
@@ -88,4 +94,3 @@ git clone https://gitlab.science.ru.nl/OperatingSystems/assignment1.git
 ```
 
 Next, open this folder (`assignment1/project`) in Visual Studio Code. Your are good to go now, and start with the assignment.
-
