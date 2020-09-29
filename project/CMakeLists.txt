@@ -21,6 +21,7 @@ add_dependencies(${PROJECT_NAME}test ${PROJECT_NAME} googletest)
 target_link_libraries(${PROJECT_NAME}test ${GTEST_LIBS_DIR}/libgtest.a ${GTEST_LIBS_DIR}/libgtest_main.a)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    target_link_libraries(${PROJECT_NAME}test pthread)
+    find_package(Threads)
+    target_link_libraries(${PROJECT_NAME}test ${CMAKE_THREAD_LIBS_INIT})
 ENDIF()
 
