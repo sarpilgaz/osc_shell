@@ -29,7 +29,7 @@ So, macOS is built on the UNIX foundation. So it is also quite easy.
 - If you don't have HomeBrew installed, do it: https://brew.sh/
 - Next, install the dependencies with these commands:  
   `brew install cmake git`  
-  `brew cask install visual-studio-code`
+  `brew install --cask visual-studio-code`
 - Install the following Visual Studio Code extensions:
   - C/C++ extension from Microsoft
   - CMake Tools extension
