@@ -67,11 +67,12 @@ int execvp(const vector<string>& args) {
 	}
 	c_args[args.size()] = nullptr;
 	// replace current process with new process as specified
-	::execvp(c_args[0], const_cast<char**>(c_args));
+	int retval = ::execvp(c_args[0], const_cast<char**>(c_args));
 	// if we got this far, there must be an error
-	int retval = errno;
-	// in case of failure, clean up memory
+	// in case of failure, clean up memory (this won't overwrite errno normally, but let's be sure)
+	int err = errno;
 	delete[] c_args;
+	errno = err;
 	return retval;
 }
 
