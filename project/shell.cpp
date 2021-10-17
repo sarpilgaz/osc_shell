@@ -1,13 +1,13 @@
 /**
-	* Shell
-	* Operating Systems
-	* v20.08.28
-	*/
+	* Shell framework
+	* course Operating Systems
+	* Radboud University
+	* v21.10.17
 
-/**
-	Hint: Control-click on a functionname to go to the definition
-	Hint: Ctrl-space to auto complete functions and variables
-	*/
+	Student names:
+	- ...
+	- ...
+*/
 
 // function/class definitions you are going to use
 #include <iostream>
