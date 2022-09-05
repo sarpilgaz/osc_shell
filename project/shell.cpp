@@ -57,7 +57,6 @@ vector<string> splitString(const string& str, char delimiter = ' ') {
 
 // wrapper around the C execvp so it can be called with C++ strings (easier to work with)
 // always start with the command itself
-// always terminate with a NULL pointer
 // DO NOT CHANGE THIS FUNCTION UNDER ANY CIRCUMSTANCE
 int execvp(const vector<string>& args) {
 	// build argument list
@@ -67,12 +66,13 @@ int execvp(const vector<string>& args) {
 	}
 	c_args[args.size()] = nullptr;
 	// replace current process with new process as specified
-	::execvp(c_args[0], const_cast<char**>(c_args));
+	int rc = ::execvp(c_args[0], const_cast<char**>(c_args));
 	// if we got this far, there must be an error
-	int retval = errno;
+	int error = errno;
 	// in case of failure, clean up memory
 	delete[] c_args;
-	return retval;
+  errno = error;
+	return rc;
 }
 
 // Executes a command with arguments. In case of failure, returns error code.
