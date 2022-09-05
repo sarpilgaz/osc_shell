@@ -1,13 +1,19 @@
 /**
-  * Shell
-  * Operating Systems
-  * v22.09.05
-  */
+	* Shell framework
+	* course Operating Systems
+	* Radboud University
+	* v22.09.05
+
+	Student names:
+	- ...
+	- ...
+*/
 
 /**
-  Hint: Control-click on a function name to go to the definition
-  Hint: Ctrl-space to auto complete functions and variables
-  */
+ * Hint: in most IDEs (Visual Studio Code, Qt Creator, neovim) you can:
+ * - Control-click on a function name to go to the definition
+ * - Ctrl-space to auto complete functions and variables
+ */
 
 // function/class definitions you are going to use
 #include <iostream>
@@ -76,7 +82,7 @@ int execvp(const vector<string>& args) {
   int rc = ::execvp(c_args[0], const_cast<char**>(c_args));
   // if we got this far, there must be an error
   int error = errno;
-  // in case of failure, clean up memory
+  // in case of failure, clean up memory (this won't overwrite errno normally, but let's be sure)
   delete[] c_args;
   errno = error;
   return rc;
