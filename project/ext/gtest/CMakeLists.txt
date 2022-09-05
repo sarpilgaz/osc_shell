@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 project(gtest_builder C CXX)
 include(ExternalProject)
 
@@ -6,6 +6,7 @@ ExternalProject_Add(googletest
     URL https://github.com/google/googletest/archive/release-1.8.0.tar.gz
     URL_HASH SHA1=e7e646a6204638fe8e87e165292b8dd9cd4c36ed
     DOWNLOAD_DIR ../../cache
+    DOWNLOAD_EXTRACT_TIMESTAMP ON
     CMAKE_ARGS -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG:PATH=DebugLibs
     -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE:PATH=ReleaseLibs
     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
