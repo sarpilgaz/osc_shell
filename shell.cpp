@@ -194,7 +194,7 @@ int step1(bool showPrompt) {
 }
 
 int shell(bool showPrompt) {
-  /* <- add one '/' in front of the other '/' to switch from step1 to the normal code
+  //* <- remove one '/' in front of the other '/' to switch from the normal code to step1 code
   while (cin.good()) {
     string commandLine = request_command_line(showPrompt);
     Expression expression = parse_command_line(commandLine);
