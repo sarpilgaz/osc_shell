@@ -17,7 +17,7 @@ Already using Linux? Great! A couple of small steps are left:
   `sudo apt-get install -y build-essential g++ gdb cmake make git`
 - Download the project files with the follow command:  
   `git clone https://gitlab.science.ru.nl/operatingsystems/assignment1.git`
-- Open the folder `assignment1/project` in Visual Studio Code.
+- Open the folder `assignment1` in Visual Studio Code.
 
 ### macOS
 
@@ -35,7 +35,7 @@ So, macOS is built on the UNIX foundation. So it is also quite easy.
   - CMake Tools extension
 - Download the project files with the follow command:  
   `git clone https://gitlab.science.ru.nl/operatingsystems/assignment1.git`
-- Open the folder `assignment1/project` in Visual Studio Code.
+- Open the folder `assignment1` in Visual Studio Code.
 
 ### Windows
 
@@ -95,4 +95,4 @@ To get the project files for the assignments, open a terminal in Visual Studio C
 git clone https://gitlab.science.ru.nl/OperatingSystems/assignment1.git
 ```
 
-Next, open this folder (`assignment1/project`) in Visual Studio Code. Your are good to go now, and start with the assignment.
+Next, open this folder (`assignment1`) in Visual Studio Code. Your are good to go now, and start with the assignment.
