@@ -9,35 +9,35 @@ using namespace std;
 //#define SHELL "/bin/sh"
 
 // declarations of methods you want to test (should match exactly)
-vector<string> splitString(const string& str, char delimiter = ' ');
+vector<string> split_string(const string& str, char delimiter = ' ');
 
 namespace {
 
 void Execute(std::string command, std::string expectedOutput);
 void Execute(std::string command, std::string expectedOutput, std::string expectedOutputFile, std::string expectedOutputFileContent);
 
-TEST(Shell, splitString) {
+TEST(Shell, split_string) {
 	std::vector<std::string> expected;
 
 	expected = {};
-	EXPECT_EQ(expected, splitString(""));
-	EXPECT_EQ(expected, splitString(" "));
-	EXPECT_EQ(expected, splitString("  "));
+	EXPECT_EQ(expected, split_string(""));
+	EXPECT_EQ(expected, split_string(" "));
+	EXPECT_EQ(expected, split_string("  "));
 
 	expected = {"foo"};
-	EXPECT_EQ(expected, splitString("foo"));
-	EXPECT_EQ(expected, splitString(" foo"));
-	EXPECT_EQ(expected, splitString("foo "));
-	EXPECT_EQ(expected, splitString(" foo "));
-	EXPECT_EQ(expected, splitString("  foo  "));
+	EXPECT_EQ(expected, split_string("foo"));
+	EXPECT_EQ(expected, split_string(" foo"));
+	EXPECT_EQ(expected, split_string("foo "));
+	EXPECT_EQ(expected, split_string(" foo "));
+	EXPECT_EQ(expected, split_string("  foo  "));
 
 	expected = {"foo", "bar"};
-	EXPECT_EQ(expected, splitString("foo bar"));
-	EXPECT_EQ(expected, splitString(" foo  bar"));
-	EXPECT_EQ(expected, splitString("  foo   bar  "));
+	EXPECT_EQ(expected, split_string("foo bar"));
+	EXPECT_EQ(expected, split_string(" foo  bar"));
+	EXPECT_EQ(expected, split_string("  foo   bar  "));
 
 	expected = {"cmd1", "arg1", "<", "inputfile", "|", "cmd2", "arg2", ">", "outputfile"};
-	EXPECT_EQ(expected, splitString("cmd1 arg1 < inputfile | cmd2 arg2 > outputfile"));
+	EXPECT_EQ(expected, split_string("cmd1 arg1 < inputfile | cmd2 arg2 > outputfile"));
 }
 
 TEST(Shell, ReadFromFile) {
