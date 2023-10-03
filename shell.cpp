@@ -96,7 +96,7 @@ int execute_command(const Command& cmd) {
 
   // execute external commands
   int retval = execvp(parts);
-  return retval;
+  return retval ? errno : 0;
 }
 
 void display_prompt() {
