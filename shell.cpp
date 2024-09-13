@@ -153,16 +153,20 @@ int execute_expression(Expression& expression) {
   // Handle intern commands (like 'cd' and 'exit')
   if (expression.commands[0].parts[0] == string("exit")) {
     exit(0);
-
   }
 
-  /*could be vastly improved. Error handling, .., etc */
   if (expression.commands[0].parts[0] == string("cd")) {
-    chdir(expression.commands[0].parts[1].c_str());
+    if (expression.commands[0].parts.size() != 2) {
+        fprintf(stderr, "Usage: cd <directory>\n");
+        return EINVAL;
+    }
+    if (chdir(expression.commands[0].parts[1].c_str()) == -1) {
+      perror("cd");
+    }
   }
   
   // External commands, executed with fork():
-  // Loop over all commandos, and connect the output and input of the forked processes
+  // Loop over all commands, and connect the output and input of the forked processes
 
   // For now, we just execute the first command in the expression. Disable.
   execute_command(expression.commands[0]);
@@ -175,7 +179,6 @@ int execute_expression(Expression& expression) {
 int step1(bool showPrompt) {
   // create communication channel shared between the two processes
   int pipefd[2];
-  char buf;
 
   if (pipe(pipefd) == -1) {
     cout << "no";
