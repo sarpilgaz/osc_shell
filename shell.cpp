@@ -151,6 +151,15 @@ int execute_expression(Expression& expression) {
     return EINVAL;
 
   // Handle intern commands (like 'cd' and 'exit')
+  if (expression.commands[0].parts[0] == string("exit")) {
+    exit(0);
+
+  }
+
+  /*could be vastly improved. Error handling, .., etc */
+  if (expression.commands[0].parts[0] == string("cd")) {
+    chdir(expression.commands[0].parts[1].c_str());
+  }
   
   // External commands, executed with fork():
   // Loop over all commandos, and connect the output and input of the forked processes
@@ -165,12 +174,23 @@ int execute_expression(Expression& expression) {
 // two processes are created, and connected to each other
 int step1(bool showPrompt) {
   // create communication channel shared between the two processes
-  // ...
+  int pipefd[2];
+  char buf;
+
+  if (pipe(pipefd) == -1) {
+    cout << "no";
+    return -1;
+  }
 
   pid_t child1 = fork();
   if (child1 == 0) {
     // redirect standard output (STDOUT_FILENO) to the input of the shared communication channel
     // free non used resources (why?)
+    dup2(pipefd[1], STDOUT_FILENO);
+
+    close(pipefd[0]);
+    close(pipefd[1]);
+
     Command cmd = {{string("date")}};
     execute_command(cmd);
     // display nice warning that the executable could not be found
@@ -181,12 +201,19 @@ int step1(bool showPrompt) {
   if (child2 == 0) {
     // redirect the output of the shared communication channel to the standard input (STDIN_FILENO).
     // free non used resources (why?)
+    dup2(pipefd[0], STDIN_FILENO);
+
+    close(pipefd[0]);
+    close(pipefd[1]);
+
     Command cmd = {{string("tail"), string("-c"), string("5")}};
     execute_command(cmd);
     abort(); // if the executable is not found, we should abort. (why?)
   }
 
-  // free non used resources (why?)
+  close(pipefd[0]);  // Close read end
+  close(pipefd[1]);  // Close write end
+
   // wait on child processes to finish (why both?)
   waitpid(child1, nullptr, 0);
   waitpid(child2, nullptr, 0);
