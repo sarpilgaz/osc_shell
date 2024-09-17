@@ -165,21 +165,56 @@ int execute_expression(Expression& expression) {
       return EXIT_FAILURE;
     } else return EXIT_SUCCESS;
   }
-
-  pid_t ch1 = fork();
-  if (ch1 == 0) { //child proccess
-    int ret = execute_command(expression.commands[0]);
-    if(ret != 0) {
-      perror("shell");
-      _exit(EXIT_FAILURE);
-    } 
-    _exit(EXIT_SUCCESS);
-  }
-
-  waitpid(ch1, nullptr, 0);
   
   // External commands, executed with fork():
   // Loop over all commands, and connect the output and input of the forked processes
+
+  int numCommands = expression.commands.size();
+  int pipefds[2 * (numCommands - 1)]; // n-1 pipes needed
+
+  // Create pipes for each command except the last one
+  for (int i = 0; i < numCommands - 1; i++) {
+      if (pipe(pipefds + i * 2) == -1) {
+          perror("pipe");
+          return errno;
+      }
+  }
+  for (int i = 0; i < numCommands; i++) {
+    pid_t pid = fork();
+    if (pid == -1) {
+      perror("fork");
+      return errno;
+    }
+    if (pid == 0) { //child
+      if (i > 0) { //get input from previous command, if not the first
+        dup2(pipefds[(i - 1) *2], STDIN_FILENO);
+      }
+
+      if (i < numCommands - 1) { //send output to next command, if not the last
+        dup2(pipefds[i * 2 + 1], STDOUT_FILENO);
+      }
+      //clean up pipes
+      for (int j = 0; j < 2 * (numCommands - 1); j++) {
+        close(pipefds[j]);
+      }
+
+      int ret = execute_command(expression.commands[i]);
+      if (ret != 0) {
+        perror("comm exec");
+        _exit(EXIT_FAILURE);        
+      }
+      _exit(EXIT_SUCCESS);
+    }
+  }
+    //pipes close in parent
+    for (int i = 0; i < 2 * (numCommands - 1); i++) {
+        close(pipefds[i]);
+    }
+
+    // wait in parent for children
+    for (int i = 0; i < numCommands; i++) {
+        wait(nullptr);
+    }
 
   return 0;
 }
