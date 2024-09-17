@@ -162,21 +162,24 @@ int execute_expression(Expression& expression) {
     }
     if (chdir(expression.commands[0].parts[1].c_str()) == -1) {
       perror("cd");
-    }
+      return EXIT_FAILURE;
+    } else return EXIT_SUCCESS;
   }
 
   pid_t ch1 = fork();
   if (ch1 == 0) { //child proccess
-    execute_command(expression.commands[0]);
+    int ret = execute_command(expression.commands[0]);
+    if(ret != 0) {
+      perror("shell");
+      _exit(EXIT_FAILURE);
+    } 
+    _exit(EXIT_SUCCESS);
   }
 
   waitpid(ch1, nullptr, 0);
   
   // External commands, executed with fork():
   // Loop over all commands, and connect the output and input of the forked processes
-
-  // For now, we just execute the first command in the expression. Disable.
-  //execute_command(expression.commands[0]);
 
   return 0;
 }
