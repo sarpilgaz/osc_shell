@@ -213,10 +213,10 @@ int execute_expression(Expression& expression) {
 
     // wait in parent for children
     for (int i = 0; i < numCommands; i++) {
-        wait(nullptr);
+      if (!expression.background)  { wait(nullptr); }
     }
 
-  return 0;
+  return EXIT_SUCCESS;
 }
 
 // framework for executing "date | tail -c 5" using raw commands
