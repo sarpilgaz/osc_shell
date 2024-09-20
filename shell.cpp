@@ -5,8 +5,8 @@
 	* v22.09.05
 
 	Student names:
-	- ...
-	- ...
+	- Sarp Ilgaz
+	- Alex Kush
 */
 
 /**
@@ -37,6 +37,8 @@
 
 // although it is good habit, you don't have to type 'std' before many objects by including this line
 using namespace std;
+
+extern char *__progname;
 
 struct Command {
   vector<string> parts = {};
@@ -158,7 +160,7 @@ int execute_expression(Expression& expression) {
   if (expression.commands[0].parts[0] == string("cd")) {
     if (expression.commands[0].parts.size() != 2) {
         fprintf(stderr, "Usage: cd <directory>\n");
-        return EINVAL;
+        return EXIT_FAILURE;
     }
     if (chdir(expression.commands[0].parts[1].c_str()) == -1) {
       perror("cd");
@@ -180,12 +182,44 @@ int execute_expression(Expression& expression) {
       }
   }
   for (int i = 0; i < numCommands; i++) {
+    /*
+    if(i != 0 && !expression.inputFromFile.empty()) {
+      cout << "cannot have a read operator in any place other than the first command" << endl;
+      _exit(EXIT_FAILURE);
+    }
+
+    if(i != numCommands-1 && !expression.outputToFile.empty()) {
+      cout << "cannot have a write operator in any place other than the last command" << endl;
+      _exit(EXIT_FAILURE);
+    } */
+
     pid_t pid = fork();
     if (pid == -1) {
       perror("fork");
       return errno;
     }
     if (pid == 0) { //child
+
+      if (!expression.inputFromFile.empty()) {
+        int inputfd = open(expression.inputFromFile.c_str(), O_RDONLY);
+        if (inputfd < 0) {
+          perror("open");
+          _exit(EXIT_FAILURE);
+        }  
+        dup2(inputfd, STDIN_FILENO);
+        close(inputfd);
+      }
+
+      if (!expression.outputToFile.empty()) {
+        int outputfd = open(expression.outputToFile.c_str(), O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+        if (outputfd < 0) {
+          perror("open");
+          _exit(EXIT_FAILURE);
+        }  
+      dup2(outputfd, STDOUT_FILENO);
+      close(outputfd);             
+      }
+
       if (i > 0) { //get input from previous command, if not the first
         dup2(pipefds[(i - 1) *2], STDIN_FILENO);
       }
@@ -200,7 +234,7 @@ int execute_expression(Expression& expression) {
 
       int ret = execute_command(expression.commands[i]);
       if (ret != 0) {
-        perror("comm exec");
+        perror(__progname);
         _exit(EXIT_FAILURE);        
       }
       _exit(EXIT_SUCCESS);
@@ -211,7 +245,7 @@ int execute_expression(Expression& expression) {
         close(pipefds[i]);
     }
 
-    // wait in parent for children
+    // wait in parent for children, expect for background processes.
     for (int i = 0; i < numCommands; i++) {
       if (!expression.background)  { wait(nullptr); }
     }
