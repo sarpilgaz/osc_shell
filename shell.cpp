@@ -38,7 +38,7 @@
 // although it is good habit, you don't have to type 'std' before many objects by including this line
 using namespace std;
 
-extern char *__progname;
+extern char *__progname; //to have better error reporting when a program fails.
 
 struct Command {
   vector<string> parts = {};
@@ -154,7 +154,7 @@ int execute_expression(Expression& expression) {
 
   // Handle intern commands (like 'cd' and 'exit')
   if (expression.commands[0].parts[0] == string("exit")) {
-    exit(0);
+    exit(EXIT_SUCCESS);
   }
 
   if (expression.commands[0].parts[0] == string("cd")) {
@@ -172,27 +172,16 @@ int execute_expression(Expression& expression) {
   // Loop over all commands, and connect the output and input of the forked processes
 
   int numCommands = expression.commands.size();
-  int pipefds[2 * (numCommands - 1)]; // n-1 pipes needed
+  int pipefds[2 * (numCommands - 1)];
 
   // Create pipes for each command except the last one
   for (int i = 0; i < numCommands - 1; i++) {
-      if (pipe(pipefds + i * 2) == -1) {
-          perror("pipe");
-          return errno;
-      }
+    if (pipe(pipefds + i * 2) == -1) {
+      perror("pipe");
+      return errno;
+    }
   }
   for (int i = 0; i < numCommands; i++) {
-    /*
-    if(i != 0 && !expression.inputFromFile.empty()) {
-      cout << "cannot have a read operator in any place other than the first command" << endl;
-      _exit(EXIT_FAILURE);
-    }
-
-    if(i != numCommands-1 && !expression.outputToFile.empty()) {
-      cout << "cannot have a write operator in any place other than the last command" << endl;
-      _exit(EXIT_FAILURE);
-    } */
-
     pid_t pid = fork();
     if (pid == -1) {
       perror("fork");
@@ -203,7 +192,7 @@ int execute_expression(Expression& expression) {
       if (!expression.inputFromFile.empty()) {
         int inputfd = open(expression.inputFromFile.c_str(), O_RDONLY);
         if (inputfd < 0) {
-          perror("open");
+          perror(expression.inputFromFile.c_str());
           _exit(EXIT_FAILURE);
         }  
         dup2(inputfd, STDIN_FILENO);
@@ -213,7 +202,7 @@ int execute_expression(Expression& expression) {
       if (!expression.outputToFile.empty()) {
         int outputfd = open(expression.outputToFile.c_str(), O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
         if (outputfd < 0) {
-          perror("open");
+          perror(expression.outputToFile.c_str());
           _exit(EXIT_FAILURE);
         }  
       dup2(outputfd, STDOUT_FILENO);
