@@ -159,7 +159,7 @@ int execute_expression(Expression& expression) {
   if (expression.commands.size() == 0)
     return EINVAL;
 
-  //check for correct file I/O syntax
+  //check for incorrect file I/O syntax
   if (!expression.correct_file_IO_syntax) {
     fprintf(stderr, "Incorrect usage of file I/O operators detected\n");
     fprintf(stderr, "operator '>' can only be used in the last command of a pipe \n");
