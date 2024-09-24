@@ -49,6 +49,7 @@ struct Expression {
   string inputFromFile;
   string outputToFile;
   bool background = false;
+  bool correct_file_IO_syntax = true;
 };
 
 // Parses a string to form a vector of arguments. The separator is a space char (' ').
@@ -138,9 +139,15 @@ Expression parse_command_line(string commandLine) {
       expression.outputToFile = args[args.size()-1];
       args.resize(args.size()-2);
     }
+    else if (i != commands.size() - 1 && args.size() > 2 && args[args.size()- 2] == ">") {
+      expression.correct_file_IO_syntax = false;
+    }
     if (i == 0 && args.size() > 2 && args[args.size()-2] == "<") {
       expression.inputFromFile = args[args.size()-1];
       args.resize(args.size()-2);
+    }
+    else if (i != 0 && args.size() > 2 && args[args.size()- 2] == "<") {
+      expression.correct_file_IO_syntax = false;
     }
     expression.commands.push_back({args});
   }
@@ -151,6 +158,14 @@ int execute_expression(Expression& expression) {
   // Check for empty expression
   if (expression.commands.size() == 0)
     return EINVAL;
+
+  //check for correct file I/O syntax
+  if (!expression.correct_file_IO_syntax) {
+    fprintf(stderr, "Incorrect usage of file I/O operators detected\n");
+    fprintf(stderr, "operator '>' can only be used in the last command of a pipe \n");
+    fprintf(stderr, "operator '<' can only be used in the first command of a pipe \n");
+    return EXIT_FAILURE;
+  }
 
   // Handle intern commands (like 'cd' and 'exit')
   if (expression.commands[0].parts[0] == string("exit")) {
