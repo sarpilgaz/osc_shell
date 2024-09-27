@@ -49,7 +49,7 @@ struct Expression {
   string inputFromFile;
   string outputToFile;
   bool background = false;
-  bool correct_file_IO_syntax = true;
+  bool correct_file_IO_syntax = true; //used to detect malformed I/O operators. See specifications
 };
 
 // Parses a string to form a vector of arguments. The separator is a space char (' ').
