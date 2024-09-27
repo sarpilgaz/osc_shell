@@ -1,6 +1,4 @@
 Describe implementation
-    
-
 
 
 -> yapılan testler:
@@ -19,6 +17,8 @@ error reporting could be better, we usually just use EXIT_FAILURE when an error 
 related exit code
 
 Inf buffer problem????? Yoktur herhalde aq.
+
+We prbably have obscure errros for some weird commands. We arent fully aware of all holes
 
 
 If one inp output or input it requires is too big, an inf buffer may be needed. 
